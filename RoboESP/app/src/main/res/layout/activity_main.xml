@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="br.ufpr.c3sl.roboarm.MainActivity">
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="25dp"
+        android:paddingTop="25dp"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/up"
+            android:id="@+id/btUp"
+            android:layout_gravity="center"
+         />
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        >
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/left"
+            android:id="@+id/btLeft" />
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="104dp"
+            android:layout_height="108dp"
+            app:srcCompat="@android:drawable/radiobutton_on_background"
+            android:id="@+id/btHand" />
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/right"
+            android:id="@+id/btRight" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:paddingTop="25dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/down"
+            android:id="@+id/btDown"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <ImageView
+            android:layout_gravity="left"
+            android:layout_weight="1"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/left"
+            android:id="@+id/btExtend" />
+
+
+        <ImageView
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/right"
+            android:id="@+id/btContract" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/device_answare"
+            android:id="@+id/txtURL"
+            tools:text="@string/device_ip" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/edResp"
+            android:hint="@string/device_answare" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

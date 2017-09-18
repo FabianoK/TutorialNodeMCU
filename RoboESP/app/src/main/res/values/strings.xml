@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">RoboArm</string>
+    <string name="device_answare">Resposta do dispositivo</string>
+    <string name="device_ip">Endereço do dispositivo</string>
+</resources>
