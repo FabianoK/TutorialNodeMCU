@@ -403,6 +403,43 @@ void loop() {
 \end{frame}
 
 
+\begin{frame}[fragile]
+\frametitle{Comunicação serial}
+
+\tiny
+\begin{lstlisting}
+String data;
+int porta = 0;
+
+void setup() {
+  Serial.begin(9600);
+  delay(500);
+  Serial.write("Digite algo:\n");
+  
+}
+
+void loop() {
+  if (Serial.available() > 0) {
+    
+    data = Serial.readString(); 
+    Serial.print("Digitado: ");
+    Serial.println(data);
+
+    Serial.println("Digite um número: ");
+    while(Serial.available() <= 0){}
+    porta = Serial.readString().toInt();
+    Serial.print(porta, HEX); 
+    Serial.write("\nDigite algo:\n");
+  }
+  delay(10);
+}
+\end{lstlisting}
+
+\end{frame}
+
+
+
+
 \subsection{Utilizando exemplos}
 \begin{frame}[fragile]
 \frametitle{}
@@ -445,11 +482,6 @@ libraries no diretório de instalação da IDE.
 
 \begin{frame}[fragile]
 \frametitle{WI-FI}
-
-Constantes
-\begin{itemize}
-\item LOW, HIGHT
-\end{itemize}
 
 Classes
 \begin{itemize}
@@ -566,7 +598,7 @@ void setup() {
   WiFi.mode(WIFI_AP); 
   WiFi.softAPConfig(IP, IP, net);
   WiFi.softAP(ssid, password);
-
+  delay(1000);
   server.begin();
 
   pinMode(LED_BUILTIN, OUTPUT);
@@ -612,6 +644,41 @@ void loop() {
 \end{lstlisting}
 \end{frame}
 
+
+\begin{frame}[fragile]
+\frametitle{Atendendo requisições (loop)}
+
+\tiny
+\begin{lstlisting}
+
+void loop() {
+    WiFiClient client = server.available();
+    if(!client)
+        return;
+
+    while(!client.available()){
+
+      if (Serial.available() > 0) {
+        data = Serial.readString();
+        Serial.print("Digitado: ");
+        Serial.println(data);  
+        continue;
+      }
+    }
+
+    response = "<html><meta charset='utf-8'/><h1>Olá cliente "+data+"</h1></html>";
+    Serial.println("Conexão recebida");
+    client.println("HTTP/1.1 200 OK");
+    client.println("Content-Type: text/html");
+    client.println("");//Fim do cabecalho http \n\r
+    client.println(response);
+
+
+    delay(10);  
+}
+ 
+\end{lstlisting}
+\end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Passando parâmetros (loop)}
