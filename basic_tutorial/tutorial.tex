@@ -612,38 +612,6 @@ void setup() {
 \end{frame}
 
 
-\begin{frame}[fragile]
-\frametitle{Atendendo requisições (loop)}
-
-\tiny
-\begin{lstlisting}
-
-void loop() {
-    WiFiClient client = server.available();
-    if(!client)
-        return;
-        
-    while(!client.available())
-        delay(1);
-    Serial.println("Conexão recebida");
-    client.println("HTTP/1.1 200 OK");
-    client.println("Content-Type: text/html");
-    client.println("");//Fim do cabecalho http \n\r
-    client.println("<html><meta charset='utf-8'/><h1>Olá cliente</h1></html>");
-
-    digitalWrite(EXTLED, HIGH);
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(1000);
-    digitalWrite(EXTLED, LOW);
-    digitalWrite(LED_BUILTIN, LOW);
-
-    delay(10);
-  
-}
- 
-\end{lstlisting}
-\end{frame}
-
 
 \begin{frame}[fragile]
 \frametitle{Atendendo requisições (loop)}
@@ -680,8 +648,83 @@ void loop() {
 \end{lstlisting}
 \end{frame}
 
+
+
+\begin{frame}[fragile]
+\frametitle{Atendendo requisições (loop)}
+
+\tiny
+\begin{lstlisting}
+
+void loop() {
+    WiFiClient client = server.available();
+    if(!client)
+        return;
+        
+    while(!client.available())
+        delay(1);
+    Serial.println("Conexão recebida");
+    client.println("HTTP/1.1 200 OK");
+    client.println("Content-Type: text/html");
+    client.println("");//Fim do cabecalho http \n\r
+    client.println("<html><meta charset='utf-8'/><h1>Olá cliente</h1></html>");
+
+    digitalWrite(EXTLED, HIGH);
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(1000);
+    digitalWrite(EXTLED, LOW);
+    digitalWrite(LED_BUILTIN, LOW);
+
+    delay(10);
+  
+}
+ 
+\end{lstlisting}
+\end{frame}
+
+
 \begin{frame}[fragile]
 \frametitle{Passando parâmetros (loop)}
+
+\tiny
+\begin{lstlisting}
+
+void loop() {
+    WiFiClient client = server.available();
+    if(!client)
+        return;
+        
+    while(!client.available())
+        delay(1);
+
+
+    String request = client.readStringUntil("\n");
+    String response = "<html><meta charset='utf-8'/><h1>Nada a fazer</h1></html>";
+    client.flush();
+
+    if(request.indexOf("?l=on") > 0){
+        digitalWrite(EXTLED, HIGH);
+        response = "<html><meta charset='utf-8'/><h1>Luz Acesa</h1></html>";
+    }else if(request.indexOf("?l=off") > 0)
+        response = "<html><meta charset='utf-8'/><h1>Luz Acesa</h1></html>";
+    }
+        
+    Serial.println("Conexão recebida");
+    client.println("HTTP/1.1 200 OK");
+    client.println("Content-Type: text/html");
+    client.println("");//Fim do cabecalho http \n\r
+    client.println(response);
+
+
+    delay(10);
+  
+}
+ 
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Melhorando a interface (loop)}
 
 \tiny
 \begin{lstlisting}
@@ -721,48 +764,92 @@ void loop() {
 \end{lstlisting}
 \end{frame}
 
+\section{Motores}
+
+\begin{frame}[fragile]
+\frametitle{Sobre Motores}
+
+\end{frame}
 
 
 \begin{frame}[fragile]
-\frametitle{Melhorando a interface (loop)}
+\frametitle{Ponte H}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{PWM (Pulse-Width Modulation)}
+
+É uma técnica que permite a simulação de sinais analógicos utilizando sistemas digitais.
+Consiste no envio de sinais em intervalos de tempos fazendo que o dispositivo receba ou não sinas
+de forma que seja possível a representação de curvas.
+
+
+\begin{itemize}
+\item Intensidade de luminosidade;
+\item Simular controle de velocidade de motores;
+\item Amplificação de ondas;
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Implementando controle de potência em LED}
 
 \tiny
 \begin{lstlisting}
+int led = 5;
+int steps = 0;
+int power = 0;
+String data = "";
+void setup() {
+  Serial.begin(9600);
+  pinMode(led, OUTPUT);
+  digitalWrite(led, HIGH);
+}
 
 void loop() {
-    WiFiClient client = server.available();
-    if(!client)
-        return;
-        
-    while(!client.available())
-        delay(1);
-
-
-    String request = client.readStringUntil("\n");
-    String response = "<html><meta charset='utf-8'/><h1>Nada a fazer</h1></html>";
-    client.flush();
-
-    if(request.indexOf("?l=on") > 0){
-        digitalWrite(EXTLED, HIGH);
-        response = "<html><meta charset='utf-8'/><h1>Luz Acesa</h1></html>";
-    }else if(request.indexOf("?l=off") > 0)
-        response = "<html><meta charset='utf-8'/><h1>Luz Acesa</h1></html>";
-    }
-        
-    Serial.println("Conexão recebida");
-    client.println("HTTP/1.1 200 OK");
-    client.println("Content-Type: text/html");
-    client.println("");//Fim do cabecalho http \n\r
-    client.println(response);
-
-
-    delay(10);
-  
+      digitalWrite(led, HIGH);
+      delayMicroseconds(power);
+      digitalWrite(led, LOW);
+      delayMicroseconds(1000 - power);
+      
+      if (Serial.available() > 0) {
+        data = Serial.readString();
+        power = data.toInt()*10;
+      }      
 }
- 
 \end{lstlisting}
 \end{frame}
 
+
+
+
+\begin{frame}[fragile]
+\frametitle{Servo Motores}
+
+Dispositivo que movimenta a partir de informação do angulo passado como parâmetro.
+Os servomotores utilizam comprimento de onda de sinais digitais para estabelecer
+quanto tempo o motor fica energizado. Aliado com uma construção mecânica os ângulos
+de rotação costumam ser bastante precisos.
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Motor de passo}
+
+\end{frame}
+
+
+\section{Displays}
+
+\begin{frame}[fragile]
+\frametitle{Escrevendo no display}
+
+\end{frame}
 
 
 \end{document}
